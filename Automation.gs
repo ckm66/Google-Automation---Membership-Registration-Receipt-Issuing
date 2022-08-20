@@ -5,17 +5,18 @@ function CreateonEditTrigger() {
       .create();
 }
 
-function printReceipt (event) {
+function receiptIssusing (event) {
   const rangeModified = event.range;
   const columnIndex = rangeModified.getColumn();
   const rowIndex = rangeModified.getRow();
   const checkbox = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
+  // ALERT USER IF LESS THAN 7 QUOTA LEFT
   if (MailApp.getRemainingDailyQuota() < 7) {
     SpreadsheetApp.getUi().alert("FATAL: Reaching Mail Quota");
   }
 
-  // Confirm
+  // Confirmation of Valid Input
   if (columnIndex !== 16) return;
   if (rowIndex < 2) return;
   if (checkbox.getRange(rowIndex, columnIndex, 1, 1).getDisplayValue() !== "TRUE") return;
@@ -56,6 +57,7 @@ function printReceipt (event) {
   })
   checkbox.getRange(rowIndex, columnIndex + 2).setValue("SENT");
 
+  // ALERT USER IF LESS THAN 10 QUOTA LEFT
   if (MailApp.getRemainingDailyQuota() < 10)
   {
     SpreadsheetApp.getUi().alert("WARMING: Reaching Mail Quota");
